@@ -27,7 +27,7 @@ ActivityCalculatorBinding binding;
     static String  savedOperator="";
    static String savedNum="";
     static String savedDots="";
-static  String res="";
+    static  String res="";
 
     public void onOperatorClick(View view)  {
         Button clikedOperator = (Button) view;
@@ -37,14 +37,19 @@ static  String res="";
         else {
             String rhs = binding.txtView.getText().toString().trim();
             savedNum=calculate(savedNum,savedOperator,rhs);
+
         }
         savedOperator = clikedOperator.getText().toString().trim();
         binding.txtView.setText("");
     }
-    public void onEqualCLick(View view)
-    {
-        Button equalOerator=(Button)view;
-        binding.txtView.setText(res);
+    public void onEqualCLick(View view) {
+        if (!savedOperator.isEmpty()) {
+            String rhs = binding.txtView.getText().toString().trim();
+            calculate(savedNum, savedOperator, rhs);
+            binding.txtView.setText(res);
+            savedNum = "";
+            savedOperator = "";
+        }
     }
     public String calculate(String lhs,String operator , String rhs)
         {
@@ -65,18 +70,12 @@ static  String res="";
                 if (n2==0.0)
                 {
                   res="Math error";
-
+                    return  res;
                 }
                 else
                     res=(n1/n2)+"";
            }
-            else if (("=").equals((operator))) {
-                savedNum="";
-                savedOperator="";
-                return res;
-            }
             savedNum=res;
-            savedOperator="";
             return res;
         }
         public void onClearClick(View view) {
